@@ -1,6 +1,6 @@
 # File Format Converter
 
-This is a simple cli program that helps you to convert your structured data files to other data formats like JSON and XML
+This is a simple cli program that helps you to convert your **structured** data files to other data formats like JSON and XML
 
 ## Features
 
@@ -40,6 +40,11 @@ ffc -tf XML -o myxmlfile myfile.csv
 This will generate unformatted output.xml, default is formatted.
 ```
 ffc -tf XML --no-formatted myfile.csv
+```
+
+Use pre-defined rules
+```
+ffc -r rules.json myfile.csv
 ```
 
 ### Define Rules
