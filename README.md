@@ -20,6 +20,17 @@ Using pip
 pip install file-format-converter
 ```
 
+Using docker 
+```
+# build docker image
+docker build -t ffc .
+
+# run with paramters
+  docker run --rm  \
+  -v $PWD/data:/data \
+  ffc --rules rules.json --output /data/output /data/hotels.csv
+```
+
 # Usage
 
 * Default target format is JSON

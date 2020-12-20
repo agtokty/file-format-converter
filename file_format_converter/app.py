@@ -83,7 +83,7 @@ def main(file, output, rules_file_path, source_format: str, target_format: str, 
     file_writer.close()
 
     if total_item > 0:
-        print('Conversion is completed in %s ms' % (duration))
+        print('Operation completed in %s ms' % (duration))
         print('Output file location: %s' % file_writer.get_result_location())
         print_stats(total_item, valid_item, invalid_item)
 
