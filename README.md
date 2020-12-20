@@ -36,6 +36,11 @@ docker build -t ffc .
 * Default target format is JSON
 * Default output name is **output**
 
+To get help on parameters
+```
+ffc --help
+```
+
 This will generate output.json
 ```
 ffc myfile.csv
@@ -142,5 +147,16 @@ else:
  ### Adding New Rule Implementations
  
  You can implement your custom rules using [rule.py](file_format_converter/api/rule.py) class.
+
+ After implementation add your file to [here in rule_helper.py](file_format_converter/rule_helper.py#L8)
  
- TODO - add details..
+Currently implemented rules
+
+| key         | Class       | Description |
+| ----------- | ----------- | ----------- |
+| **str-length**  | [StringLengthRule](file_format_converter/rules/string_length_rule.py) | Filter string values by their length       |
+| **numeric**     | [NumericRule](file_format_converter/rules/numeric_rule.py)            | Filder numeric values       |
+| **url**         | [UrlRule](file_format_converter/rules/url_rule.py)                    | Filter valid url       |
+
+ TODO - find rule classes using module loading instead of static dict
+ TODO - Support simple rule query like SQL where statements.
