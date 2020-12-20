@@ -1,10 +1,12 @@
 import json
 import os
 
+from file_format_converter.rules.numeric_rule import NumericRule
 from file_format_converter.rules.string_length_rule import StringLengthRule
 
 RULE_IMPLEMENTATIONS = {
-    "str-length": StringLengthRule()
+    "str-length": StringLengthRule(),
+    "numeric": NumericRule()
 }
 
 

@@ -5,9 +5,9 @@
     }
   },
   "stars": {
-    "number": {
-      "min": 0,
-      "max": 5
+    "numeric": {
+      "min": 4,
+      "max": 4
     }
   },
   "url": {
