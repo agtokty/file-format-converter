@@ -3,10 +3,12 @@ import os
 
 from file_format_converter.rules.numeric_rule import NumericRule
 from file_format_converter.rules.string_length_rule import StringLengthRule
+from file_format_converter.rules.url_rule import UrlRule
 
 RULE_IMPLEMENTATIONS = {
-    "str-length": StringLengthRule(),
-    "numeric": NumericRule()
+    'str-length': StringLengthRule(),
+    'numeric': NumericRule(),
+    'url': UrlRule()
 }
 
 

@@ -7,7 +7,7 @@ class StringLengthRule(Rule):
         self.len_max = None
 
     def get_key(self) -> str:
-        return "str-length"
+        return 'str-length'
 
     def set_config(self, config={}) -> bool:
         len_min = config.get("min", None)

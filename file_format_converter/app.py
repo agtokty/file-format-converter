@@ -83,16 +83,16 @@ def main(file, output, rules_file_path, source_format: str, target_format: str, 
     file_writer.close()
 
     if total_item > 0:
-        print("Conversion is completed in %s ms" % (duration))
-        print("Output file location: %s" % file_writer.get_result_location())
+        print('Conversion is completed in %s ms' % (duration))
+        print('Output file location: %s' % file_writer.get_result_location())
         print_stats(total_item, valid_item, invalid_item)
 
 
 def print_stats(total_item, valid_item, invalid_item):
     if total_item > 0:
-        print("Total items: %s" % total_item)
-        print("Valid item count: %s percent: %s" % (valid_item, round(valid_item / total_item * 100)))
-        print("Invalid item count: %s percent: %s" % (invalid_item, round(invalid_item / total_item * 100)))
+        print('Total items: %s' % total_item)
+        print('Valid item count: %s percent: %s' % (valid_item, round(valid_item / total_item * 100)))
+        print('Invalid item count: %s percent: %s' % (invalid_item, round(invalid_item / total_item * 100)))
 
 
 if __name__ == "__main__":

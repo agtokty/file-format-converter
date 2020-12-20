@@ -7,7 +7,7 @@ class NumericRule(Rule):
         self.max = None
 
     def get_key(self) -> str:
-        return "numeric"
+        return 'numeric'
 
     def set_config(self, config={}) -> bool:
         min = config.get("min", None)
