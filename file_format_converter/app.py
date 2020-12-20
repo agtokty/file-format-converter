@@ -7,29 +7,42 @@ import click
 from file_format_converter.file_readers.csv_file_reader import CSVReader
 from file_format_converter.file_writer.json_writer import JsonFileWriter
 from file_format_converter.file_writer.xml_writer import XmlFileWriter
+from file_format_converter.rule_helper import RuleHelper
+
+SUPPORTED_SOURCE_FORMATS = ["csv"]
+SUPPORTED_TARGET_FORMATS = ["json", "xml"]
 
 
 @click.command()
 @click.argument('file', type=click.Path(exists=True))
 @click.option("-o", "--output", default="output", help="Output file name without any extension, default is 'output.<format-extension>'")
-@click.option("-tf", "--target-format", "target_format", default="JSON", help="Supported formats: JSON - XML, default is JSON")
-@click.option("-sf", "--source-format", "source_format", help="Supported formats: CSV, default is CSV")
-def main(file, output, source_format: str, target_format: str):
-    file_writer = None
-    file_reader = None
-
-    if target_format is not None:
+@click.option("-r", "--rules", "rules_file_path", help="Rule definitions file")
+@click.option("-tf", "--target-format", "target_format", default="json", help="Target data format",
+              type=click.Choice(SUPPORTED_TARGET_FORMATS, case_sensitive=False))
+@click.option("-sf", "--source-format", "source_format", default="csv", help="Source data format",
+              type=click.Choice(SUPPORTED_SOURCE_FORMATS, case_sensitive=False))
+@click.option('--formatted/--no-formatted', default=True, help="Indicated that target file will be formatted or not")
+def main(file, output, rules_file_path, source_format: str, target_format: str, formatted: bool):
+    if target_format is None:
         target_format = "json"
     target_format = target_format.lower()
 
-    if source_format is not None:
+    if source_format is None:
         source_format = "json"
     source_format = source_format.lower()
 
+    writer_options = {
+        "output": output,
+        "formatted": formatted
+    }
+
+    file_writer = None
+    file_reader = None
+
     if target_format.__eq__("xml"):
-        file_writer = XmlFileWriter({"output": output})
+        file_writer = XmlFileWriter(writer_options)
     else:
-        file_writer = JsonFileWriter({"output": output})
+        file_writer = JsonFileWriter(writer_options)
 
     if source_format.__eq__("csv"):
         file_reader = CSVReader(file)
@@ -44,17 +57,25 @@ def main(file, output, source_format: str, target_format: str):
     try:
         start_time = time.time()
 
-        file_reader = CSVReader(file)
-
         header = file_reader.get_item_names()
-        header_index = {}
+        header_names = []  # header name indexes [header1, header2, ..]
+        header_indexes = {}  # header name indexes {header1 : 0, header2 : 1 ..}
+
         for i, name in enumerate(header):
-            header_index[i] = name
-        file_writer.set_header(header_index)
+            header_names.append(name)
+            header_indexes[name] = i
+
+        file_writer.set_header(header_names)
+        rule_helper = RuleHelper(rules_file_path, header_indexes)
 
         for row in file_reader.get_items():
-            file_writer.save_item(row)
-            valid_item += 1
+            row, is_valid = rule_helper.apply(row)
+            if is_valid:
+                file_writer.save_item(row)
+                valid_item += 1
+            else:
+                invalid_item += 1
+
             total_item += 1
 
         duration = (time.time() - start_time)
