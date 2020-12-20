@@ -20,13 +20,13 @@ setup(
     include_package_data=True,
     python_requires=">=3.5",
     packages=find_packages(exclude=['tests*']),
-    url='https://github.com/agtokty/csv2others',
-    download_url='https://github.com/agtokty/csv2others/archive/%s.tar.gz' % VERSION,
+    url='https://github.com/agtokty/file-format-converter',
+    download_url='https://github.com/agtokty/file-format-converter/archive/%s.tar.gz' % VERSION,
     install_requires=[
         'click'
     ],
     entry_points={
         'console_scripts': [
-            'ffc = csv2others.app:main'
+            'ffc = file_format_converter.app:main'
         ]}
 )
