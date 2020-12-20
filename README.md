@@ -1,12 +1,24 @@
 # File Format Converter
 
-This cli program help you to convert your structured file to other data formats like JSON and XML
+This is a simple cli program that helps you to convert your structured data files to other data formats like JSON and XML
 
 ## Features
 
-* [x] Csv to Json - Xml
-* [ ] Json to Csv - Xml
-* [ ] Xml to Csv - Json
+* Conversations 
+    * [x] Csv to Json - Xml
+    * [ ] Json to Csv - Xml
+    * [ ] Xml to Csv - Json
+* Formatted and unformetted output option
+* Validate and only transform valid data using rule definitions
+
+# Installation
+
+TODO - upload package to pypi 
+
+Using pip 
+```
+pip install file-format-converter
+```
 
 # Usage
 
@@ -25,15 +37,57 @@ ffc -tf XML -o myxmlfile myfile.csv
 ```
 
 
-This will generate formatted output.xml
+This will generate unformatted output.xml, default is formatted.
 ```
-ffc -tf XML --formatted myfile.csv
+ffc -tf XML --no-formatted myfile.csv
 ```
 
+### Define Rules
+
+You can define validation rules for each column in data before transformation to new format.
+So, only valid rows will be transformed to new format
+
+```
+{
+  "<column-name>": {
+    "<rule-key>": {
+      "<rule-param>": "<rule-param>"
+    },
+    ... // other rules
+  },
+  ...// other column rules
+}
+```
+
+For example, following rule has the rules;
+
+* **hotel** column value should only have up to 100 characters.
+* **stars** column value should be a number from 0 to 5 value.
+* **url** column value should syntactically valid url.
+
+```
+{
+  "hotel": {
+    "str-length": {
+      "max": 100
+    }
+  },
+  "stars": {
+    "number": {
+      "min": 0,
+      "max": 5
+    }
+  },
+  "url": {
+    "url": true
+  }
+}
+```
 
 # Development
 
 You can extend capabilities of this app by adding new source reader and target format generators.
+
 
 ### Adding New Reader
 
@@ -49,6 +103,8 @@ else:
     file_reader = CSVReader(file)
 ```
 
+ TODO - find classes using module loading, not using if else...
+ 
 ### Adding New Format Writer
 
 Outputters are target format file writers. Current
@@ -64,3 +120,11 @@ elif file_format.__eq__("<YOUR-FORMAT-NAME>""):
 else:
     out = JsonOutputter({"output": output})
 ```
+
+ TODO - find classes using module loading, not using if else...
+ 
+ ### Adding New Rule Implementations
+ 
+ You can implement your custom rules using [rule.py](file_format_converter/api/rule.py) class.
+ 
+ TODO - add details..

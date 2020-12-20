@@ -1,0 +1,16 @@
+{
+  "name": {
+    "str-length": {
+      "max": 100
+    }
+  },
+  "stars": {
+    "number": {
+      "min": 0,
+      "max": 5
+    }
+  },
+  "url": {
+    "url": true
+  }
+}
