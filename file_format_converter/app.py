@@ -65,7 +65,7 @@ def main(file, output, rules_file_path, source_format: str, target_format: str, 
         file_writer.set_header(header_names)
         rule_helper = RuleHelper(rules_file_path, header_indexes)
 
-        for row in file_reader.get_items():
+        for row in file_reader.get_items():  # get all data line by line
             row, is_valid = rule_helper.apply(row)
             if is_valid:
                 file_writer.save_item(row)
@@ -83,7 +83,7 @@ def main(file, output, rules_file_path, source_format: str, target_format: str, 
     file_writer.close()
 
     if total_item > 0:
-        print('Operation completed in %s ms' % (duration))
+        print('Operation completed in %s ms' % ("{:.3f}".format(duration)))
         print('Output file location: %s' % file_writer.get_result_location())
         print_stats(total_item, valid_item, invalid_item)
 

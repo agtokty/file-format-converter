@@ -13,11 +13,19 @@ This is a simple cli program that helps you to convert your **structured** data 
 
 # Installation
 
-TODO - upload package to pypi 
-
-Using pip 
+Using pip - *Not completed* (TODO - upload package to pypi )
 ```
 pip install file-format-converter
+```
+
+To install as package on your computer, run the following commands.
+
+```
+pip install --no-cache-dir -r requirements.txt
+
+python setup.py install
+
+# after succesfull installation you can use th ffc command, see the Usage section
 ```
 
 Using docker 
@@ -28,7 +36,9 @@ docker build -t ffc .
 # run with paramters
   docker run --rm  \
   -v $PWD/data:/data \
-  ffc --rules rules.json --output /data/output /data/hotels.csv
+  ffc --rules /data/rules.json --output /data/output /data/hotels.csv
+
+this will generate output.json file in your data folder
 ```
 
 # Usage
@@ -66,7 +76,7 @@ ffc -r rules.json myfile.csv
 ### Define Rules
 
 You can define validation rules for each column in data before transformation to new format.
-So, only valid rows will be transformed to new format
+So, only valid rows will be transformed to new format. You can add multiple rules for a single columns.
 
 ```
 {
@@ -74,7 +84,7 @@ So, only valid rows will be transformed to new format
     "<rule-key>": {
       "<rule-param>": "<rule-param>"
     },
-    ... // other rules
+    ... // other rules for this column
   },
   ...// other column rules
 }
@@ -124,11 +134,9 @@ else:
     file_reader = CSVReader(file)
 ```
 
- TODO - find classes using module loading, not using if else...
- 
 ### Adding New Format Writer
 
-Outputters are target format file writers. Current
+Format writers are target format file writers. Current
 Currently only supported target file formats are Json and Xml. 
 To add new writer you can implement [file_writer.py](file_format_converter/api/file_writer.py) class.
 After implementation you can add it to [app.py](file_format_converter/app.py) to initialize writer instance.
@@ -142,8 +150,6 @@ else:
     out = JsonOutputter({"output": output})
 ```
 
- TODO - find classes using module loading, not using if else...
- 
  ### Adding New Rule Implementations
  
  You can implement your custom rules using [rule.py](file_format_converter/api/rule.py) class.
@@ -158,5 +164,14 @@ Currently implemented rules
 | **numeric**     | [NumericRule](file_format_converter/rules/numeric_rule.py)            | Filder numeric values       |
 | **url**         | [UrlRule](file_format_converter/rules/url_rule.py)                    | Filter valid url       |
 
- TODO - find rule classes using module loading instead of static dict
- TODO - Support simple rule query like SQL where statements.
+-----
+
+### TODO List
+
+ * find writer, reader and rule classes using module loading instead of hard coded definitions
+ * add unit and integration tests
+ * add json, xml and yaml reader
+ * add csv, yaml format writer
+ * use logger instead of print
+ * publish package to pypi
+ * support simple rule query like SQL where statements.
